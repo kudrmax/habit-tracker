@@ -1,5 +1,6 @@
+from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
-
+from core.config import settings
 
 class Base(DeclarativeBase):
     """
@@ -10,6 +11,10 @@ class Base(DeclarativeBase):
     id: уникальный идентификатор
     """
     __abstract__ = True
+
+    metadata = MetaData(
+        naming_convention=settings.db.naming_convention,
+    )
 
     @declared_attr.directive
     def __tablename__(cls) -> str:
