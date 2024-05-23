@@ -16,7 +16,7 @@ async def get_all_users(session: AsyncSession) -> List[User]:
 async def get_user_by_id(session: AsyncSession, user_id: int) -> User:
     query = select(User).where(User.id == user_id)
     result = await session.execute(query)
-    user = result.scalar_one_or_none()
+    user: User = result.scalar_one_or_none()
     return user
 
 
@@ -26,3 +26,12 @@ async def create_user(session: AsyncSession, new_user: UserCreate) -> User:
     await session.commit()
     await session.refresh(user)
     return user
+
+
+async def delete_user(session: AsyncSession, user_id: int):
+    user: User = await get_user_by_id(session, user_id)
+    if user:
+        await session.delete(user)
+        await session.commit()
+        return user
+    return None
