@@ -17,6 +17,7 @@ aiosqlite = "^0.20.0"
 pydantic-settings = "^2.2.1"
 alembic = "^1.13.1"
 black = "^24.4.2"
+requests = "^2.32.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
