@@ -4,9 +4,8 @@ import requests
 # from dotenv import load_dotenv
 
 from tg_api import TG_API
+from tg_api import WHOOK
 
-whook = 'ec5c1df70ecdc7.lhr.life'
-
-r = requests.get(f'https://api.telegram.org/bot{TG_API}/setWebhook?url=https://{whook}/')
+r = requests.get(f'https://api.telegram.org/bot{TG_API}/setWebhook?url=https://{WHOOK}/')
 
 print(r.json())
