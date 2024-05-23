@@ -4,9 +4,10 @@
 
 ## Технологии
 
-- `FastAPI`
-- `SQLAlchemy`
-- `Alembic`
+- `Python`
+  - `FastAPI`
+  - `SQLAlchemy`
+  - `Alembic`
 - `PostrgeSQL`
 - `Docker`
 - `Poetry`
