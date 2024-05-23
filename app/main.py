@@ -10,8 +10,6 @@ from models import db_helper
 from api import router as api_router
 
 
-# from api_v1 import router as router_v1
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
@@ -22,9 +20,48 @@ async def lifespan(app: FastAPI):
     await db_helper.dispose()
 
 
-main_app = FastAPI(lifespan=lifespan)
+main_app = FastAPI(
+    lifespan=lifespan,
+    docs_url='/docs' if not settings.run.static_docs else None,
+    redoc_url='/redoc' if not settings.run.static_docs else None,
+)
 main_app.include_router(api_router)
-# main_app.include_router(users_router)
+
+
+if settings.run.static_docs:
+    from fastapi.openapi.docs import (
+        get_redoc_html,
+        get_swagger_ui_html,
+        get_swagger_ui_oauth2_redirect_html,
+    )
+    from fastapi.staticfiles import StaticFiles
+
+    main_app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+    @main_app.get("/docs", include_in_schema=False)
+    async def custom_swagger_ui_html():
+        return get_swagger_ui_html(
+            openapi_url=main_app.openapi_url,
+            title=main_app.title + " - Swagger UI",
+            oauth2_redirect_url=main_app.swagger_ui_oauth2_redirect_url,
+            swagger_js_url="/static/swagger-ui-bundle.js",
+            swagger_css_url="/static/swagger-ui.css",
+        )
+
+
+    @main_app.get(main_app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
+    async def swagger_ui_redirect():
+        return get_swagger_ui_oauth2_redirect_html()
+
+
+    @main_app.get("/redoc", include_in_schema=False)
+    async def redoc_html():
+        return get_redoc_html(
+            openapi_url=main_app.openapi_url,
+            title=main_app.title + " - ReDoc",
+            redoc_js_url="/static/redoc.standalone.js",
+        )
 
 if __name__ == "__main__":
     uvicorn.run(
