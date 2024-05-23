@@ -12,6 +12,7 @@ async def get_all_users(session: AsyncSession) -> List[User]:
     result = await session.scalars(stmt)
     return list(result.all())
 
+
 async def create_user(session: AsyncSession, new_user: UserCreate) -> User:
     user = User(**new_user.model_dump())
     session.add(user)
