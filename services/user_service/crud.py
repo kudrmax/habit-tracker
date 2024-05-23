@@ -8,9 +8,10 @@ from .schemas import UserCreate
 
 
 async def get_all_users(session: AsyncSession) -> List[User]:
-    stmt = select(User).order_by(User.id)
-    result = await session.scalars(stmt)
-    return list(result.all())
+    query = select(User).order_by(User.id)
+    result = await session.execute(query)
+    users: List[User] = list(result.scalars())
+    return users
 
 
 async def get_user_by_id(session: AsyncSession, user_id: int) -> User:
@@ -21,10 +22,14 @@ async def get_user_by_id(session: AsyncSession, user_id: int) -> User:
 
 
 async def create_user(session: AsyncSession, new_user: UserCreate) -> User:
-    user = User(**new_user.model_dump())
-    session.add(user)
-    await session.commit()
-    await session.refresh(user)
+    user_dict = new_user.model_dump()
+    user = User(**user_dict)
+    if user:
+        user_dict['username'] = user_dict['username'].lower()
+        user = User(**user_dict)
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
     return user
 
 
