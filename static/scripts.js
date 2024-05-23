@@ -1,26 +1,25 @@
-const apiUrl = 'http://localhost:7878/api/user';
-
 async function fetchAllUsers() {
-    const response = await fetch(apiUrl);
+    const response = await fetch('/api/user');
     const users = await response.json();
-    const userList = document.getElementById('users');
-    userList.innerHTML = '';
+    const usersList = document.getElementById('users');
+    usersList.innerHTML = '';
     users.forEach(user => {
         const li = document.createElement('li');
         li.textContent = `ID: ${user.id}, Username: ${user.username}`;
-        userList.appendChild(li);
+        usersList.appendChild(li);
     });
 }
 
 async function createUser() {
     const username = document.getElementById('username').value;
-    const response = await fetch(apiUrl, {
+    const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username })
+        body: JSON.stringify({ username }),
     });
+
     if (response.ok) {
         alert('User created successfully');
         fetchAllUsers();
@@ -29,29 +28,12 @@ async function createUser() {
     }
 }
 
-async function editUser() {
-    const userId = document.getElementById('edit-user-id').value;
-    const newUsername = document.getElementById('edit-username').value;
-    const response = await fetch(`${apiUrl}/${userId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: newUsername })
-    });
-    if (response.ok) {
-        alert('User updated successfully');
-        fetchAllUsers();
-    } else {
-        alert('Failed to update user');
-    }
-}
-
 async function deleteUser() {
     const userId = document.getElementById('delete-user-id').value;
-    const response = await fetch(`${apiUrl}/${userId}`, {
-        method: 'DELETE'
+    const response = await fetch(`/api/user/${userId}`, {
+        method: 'DELETE',
     });
+
     if (response.ok) {
         alert('User deleted successfully');
         fetchAllUsers();
@@ -60,16 +42,36 @@ async function deleteUser() {
     }
 }
 
-async function searchUser() {
-    const userId = document.getElementById('search-user-id').value;
-    const response = await fetch(`${apiUrl}/${userId}`);
-    const user = await response.json();
-    const searchResult = document.getElementById('search-result');
-    if (user) {
-        searchResult.textContent = `ID: ${user.id}, Username: ${user.username}`;
+async function editUser() {
+    const userId = document.getElementById('edit-user-id').value;
+    const username = document.getElementById('edit-username').value;
+    const response = await fetch(`/api/user/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username }),
+    });
+
+    if (response.ok) {
+        alert('User edited successfully');
+        fetchAllUsers();
     } else {
-        searchResult.textContent = 'User not found';
+        alert('Failed to edit user');
     }
 }
 
-window.onload = fetchAllUsers;
+async function searchUser() {
+    const userId = document.getElementById('search-user-id').value;
+    const response = await fetch(`/api/user/${userId}`);
+
+    if (response.ok) {
+        const user = await response.json();
+        const resultDiv = document.getElementById('search-result');
+        resultDiv.textContent = `ID: ${user.id}, Username: ${user.username}`;
+    } else {
+        alert('User not found');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchAllUsers);
