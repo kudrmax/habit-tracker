@@ -12,7 +12,7 @@ class RunSettings(BaseModel):
 
 
 class ApiPrefixSettings(BaseModel):
-    prefix: str = 'api'
+    prefix: str = '/api'
 
 
 class DbSettings(BaseModel):
