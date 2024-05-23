@@ -11,3 +11,11 @@ class UserCreate(UserBase):
 
 class UserRead(UserBase):
     id: int
+
+
+class UserUpdate(UserBase):
+    id: int
+
+
+class UserDelete(UserBase):
+    id: int
