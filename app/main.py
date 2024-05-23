@@ -27,4 +27,9 @@ main_app.include_router(api_router)
 # main_app.include_router(users_router)
 
 if __name__ == "__main__":
-    uvicorn.run('main:main_app', reload=True)
+    uvicorn.run(
+        'main:main_app',
+        host=settings.run.host,
+        port=settings.run.port,
+        reload=True
+    )

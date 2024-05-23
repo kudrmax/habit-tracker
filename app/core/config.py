@@ -7,8 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class RunSettings(BaseModel):
-    host: str = 'localhost'
-    port: int = 5432
+    host: str = '127.0.0.1'
+    port: int = 8000
 
 
 class ApiPrefixSettings(BaseModel):
