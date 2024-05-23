@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from crud.user import get_all_users
-from crud.user import create_user
+from .crud import get_all_users
+from .crud import create_user
 from models import db_helper
-from schemas.user_schema import UserRead, UserCreate
+from .schemas import UserRead, UserCreate
 
-router = APIRouter(tags=["users"], prefix="/users")
+router = APIRouter(tags=["user"], prefix="/user")
 
 
 @router.get("/", response_model=list[UserRead])

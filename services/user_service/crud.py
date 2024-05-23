@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import User
-from schemas.user_schema import UserCreate
+from .schemas import UserCreate
 
 
 async def get_all_users(session: AsyncSession) -> List[User]:

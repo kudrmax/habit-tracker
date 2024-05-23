@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from core.config import settings
+from config import settings
 
 from .views import router as user_router
 

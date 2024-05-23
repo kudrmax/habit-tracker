@@ -4,10 +4,9 @@ import uvicorn
 
 from fastapi import FastAPI
 
-from core.config import settings
-from models import Base
-from models import db_helper
-from api import router as api_router
+from config import settings
+from models import Base, db_helper
+from services.user_service import router as api_router
 
 
 @asynccontextmanager
