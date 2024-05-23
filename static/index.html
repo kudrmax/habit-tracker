@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>User Management</h1>
+
+    <div id="user-form">
+        <h2>Create User</h2>
+        <input type="text" id="username" placeholder="Username">
+        <button onclick="createUser()">Create User</button>
+    </div>
+
+    <div id="user-list">
+        <h2>All Users</h2>
+        <button onclick="fetchAllUsers()">Refresh List</button>
+        <ul id="users"></ul>
+    </div>
+
+    <div id="user-edit">
+        <h2>Edit User</h2>
+        <input type="number" id="edit-user-id" placeholder="User ID">
+        <input type="text" id="edit-username" placeholder="New Username">
+        <button onclick="editUser()">Edit User</button>
+    </div>
+
+    <div id="user-delete">
+        <h2>Delete User</h2>
+        <input type="number" id="delete-user-id" placeholder="User ID">
+        <button onclick="deleteUser()">Delete User</button>
+    </div>
+
+    <div id="user-search">
+        <h2>Search User</h2>
+        <input type="number" id="search-user-id" placeholder="User ID">
+        <button onclick="searchUser()">Search User</button>
+        <div id="search-result"></div>
+    </div>
+
+    <script src="/static/scripts.js"></script>
+</body>
+</html>

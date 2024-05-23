@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 
 from fastapi import FastAPI
+from starlette.responses import HTMLResponse
 
 from config import settings
 from models import Base, db_helper
@@ -13,7 +14,7 @@ from services.user_service import router as api_router
 async def lifespan(app: FastAPI):
     # startup
     # async with db_helper.engine.begin() as conn:
-        # await conn.run_sync(Base.metadata.create_all)
+    # await conn.run_sync(Base.metadata.create_all)
     yield
     # shutdown
     await db_helper.dispose()
@@ -26,6 +27,9 @@ main_app = FastAPI(
 )
 main_app.include_router(api_router)
 
+from fastapi.staticfiles import StaticFiles
+
+main_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if settings.run.static_docs:
     from fastapi.openapi.docs import (
@@ -33,9 +37,6 @@ if settings.run.static_docs:
         get_swagger_ui_html,
         get_swagger_ui_oauth2_redirect_html,
     )
-    from fastapi.staticfiles import StaticFiles
-
-    main_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
     @main_app.get("/docs", include_in_schema=False)
@@ -61,6 +62,13 @@ if settings.run.static_docs:
             title=main_app.title + " - ReDoc",
             redoc_js_url="/static/redoc.standalone.js",
         )
+
+
+@main_app.get("/", response_class=HTMLResponse)
+async def read_root():
+    with open("static/index.html") as f:
+        return HTMLResponse(content=f.read(), status_code=200)
+
 
 if __name__ == "__main__":
     uvicorn.run(
