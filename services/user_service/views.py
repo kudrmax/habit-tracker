@@ -39,7 +39,7 @@ async def create_user_endpoint(
     return user
 
 
-@router.post("/{user_id}")
+@router.delete("/{user_id}")
 async def delete_user_endpoint(
         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         user_id: int,
