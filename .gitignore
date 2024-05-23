@@ -4,3 +4,4 @@ __pycache__
 */__pycache__
 */*/__pycache__
 */*/*/ __pycache__
+services/telegram_service/tg_api.py
