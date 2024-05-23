@@ -13,6 +13,13 @@ async def get_all_users(session: AsyncSession) -> List[User]:
     return list(result.all())
 
 
+async def get_user_by_id(session: AsyncSession, user_id: int) -> User:
+    query = select(User).where(User.id == user_id)
+    result = await session.execute(query)
+    user = result.scalar_one_or_none()
+    return user
+
+
 async def create_user(session: AsyncSession, new_user: UserCreate) -> User:
     user = User(**new_user.model_dump())
     session.add(user)
