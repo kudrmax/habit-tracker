@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .crud import get_all_users
-from .crud import create_user, get_user_by_id, delete_user
+from .crud import create_user, get_user_by_id, delete_user, update_user
 from models import db_helper
-from .schemas import UserRead, UserCreate
+from .schemas import UserRead, UserCreate, UserUpdate
 
 router = APIRouter(tags=["user"], prefix="/user")
 
@@ -48,12 +48,17 @@ async def delete_user_endpoint(
     if deleted_user is None:
         raise HTTPException(status_code=404, detail=f"User {user_id} not found")
     return deleted_user
-    # return UserRead(id=10, username='123')
 
-# @router.post("/", response_model=UserRead)
-# async def update_user_endpoint(
-#         session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
-#         new_user: UserCreate,
-# ):
-#     user = await create_user(session=session, new_user=new_user)
-#     return user
+
+@router.put("/{user_id}")
+async def update_product_endpoint(
+        user_id: int,
+        new_user: UserUpdate,
+        session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+):
+    user_updated = await update_user(
+        session=session,
+        user_id=user_id,
+        new_user=new_user,
+    )
+    return user_updated
