@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:7878/api/user';
+const apiUrl = 'http://localhost:8000/api/user';
 
 async function fetchAllUsers() {
     const response = await fetch(apiUrl);
