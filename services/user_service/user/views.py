@@ -50,15 +50,17 @@ async def delete_user_endpoint(
     return deleted_user
 
 
-@router.put("/{user_id}")
+@router.patch("/{user_id}")
 async def update_product_endpoint(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
         user_id: int,
         new_user: UserUpdate,
-        session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
-    user_updated = await update_user(
+    updated_user = await update_user(
         session=session,
         user_id=user_id,
         new_user=new_user,
     )
-    return user_updated
+    if not updated_user:
+        raise HTTPException(status_code=404, detail=f"User {user_id} not found")
+    return updated_user

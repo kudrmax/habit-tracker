@@ -13,12 +13,8 @@ class UserRead(UserBase):
     id: int
 
 
-class UserUpdate(UserCreate):
-    pass
-
-
-# class UserUpdatePartial(UserCreate):
-#     username: str | None = None
+class UserUpdate(BaseModel):
+    username: str | None = None
 
 
 class UserDelete(UserBase):

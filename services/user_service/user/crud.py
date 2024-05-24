@@ -52,3 +52,18 @@ async def update_user(
     await session.commit()
     await session.refresh(user)
     return user
+
+
+async def update_user(
+        session: AsyncSession,
+        user_id: int,
+        new_user: UserUpdate) -> User:
+    user: User = await get_user_by_id(session, user_id)
+    if not user:
+        return None
+    new_user_dict = new_user.model_dump(exclude_unset=True)
+    for key, value in new_user_dict.items():
+        setattr(user, key, value)
+    await session.commit()
+    await session.refresh(user)
+    return user

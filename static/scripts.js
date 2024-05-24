@@ -32,12 +32,17 @@ async function createUser() {
 async function editUser() {
     const userId = document.getElementById('edit-user-id').value;
     const newUsername = document.getElementById('edit-username').value;
+
+    // Создаем объект с обновляемыми данными
+    const updatedData = {};
+    if (newUsername) updatedData.username = newUsername;
+
     const response = await fetch(`${apiUrl}/${userId}`, {
-        method: 'PUT',
+        method: 'PATCH', // Изменяем метод на PATCH
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: newUsername })
+        body: JSON.stringify(updatedData) // Отправляем только измененные данные
     });
     if (response.ok) {
         alert('User updated successfully');
@@ -46,6 +51,7 @@ async function editUser() {
         alert('Failed to update user');
     }
 }
+
 
 async function deleteUser() {
     const userId = document.getElementById('delete-user-id').value;
