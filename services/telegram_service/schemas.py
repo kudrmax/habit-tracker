@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class FromTg(BaseModel):
-    # id: int
+    id: int
     # is_bot: bool
     username: str = None
     first_name: str = None

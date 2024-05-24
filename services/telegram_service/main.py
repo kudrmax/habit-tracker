@@ -10,7 +10,8 @@ app = FastAPI()
 async def root(request: Request):
     result_dict = await request.json()
     result_obj = Answer(**result_dict)
-    print(f'<first_name="{result_obj.message.from_tg.first_name}", message="{result_obj.message.text}">')
+    # print(result_dict)
+    print(f'<first_name="{result_obj.message.from_tg.first_name}", message="{result_obj.message.text}", chat_id={result_obj.message.from_tg.id}>')
     return True
 
 
